@@ -1,0 +1,40 @@
+{
+	"FileVersion": 3,
+	"Version": 1,
+	"VersionName": "1.0",
+	"FriendlyName": "World Engine - Procedural Infinite Terrain",
+	"Description": "Procedural Infinite Terrain is an infinite terrain generation plugin with real-time terrain, based on the player's location, fully 100% optimized.",
+	"Category": "Geometry",
+	"CreatedBy": "Wise Labs: Gameworks",
+	"CreatedByURL": "https://wiselabsgworks.com.br",
+	"DocsURL": "https://wise-labs.gitbook.io/world-engine/",
+	"MarketplaceURL": "com.epicgames.launcher://ue/marketplace/product/2b381a4d50674d468542cbfb59625302",
+	"SupportURL": "https://discord.gg/WRmb74fArq",
+	"EngineVersion": "5.3",
+	"CanContainContent": true,
+	"IsBetaVersion": true,
+	"IsExperimentalVersion": false,
+	"Installed": false,
+	"Modules": [
+		{
+			"Name": "WorldEngineInfiniteTerrain",
+			"Type": "Runtime",
+			"LoadingPhase": "Default",
+			"PlatformAllowList": ["Win64", "Mac"]
+		}
+	],
+	"Plugins": [
+		{
+			"Name": "ProceduralMeshComponent",
+			"Enabled": true
+		},
+		{
+			"Name": "Water",
+			"Enabled": true
+		},
+		{
+			"Name": "WaterExtras",
+			"Enabled": true
+		}
+	]
+}
