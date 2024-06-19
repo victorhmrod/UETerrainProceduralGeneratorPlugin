@@ -10,7 +10,7 @@
 	"DocsURL": "https://wise-labs.gitbook.io/world-engine/",
 	"MarketplaceURL": "com.epicgames.launcher://ue/marketplace/product/2b381a4d50674d468542cbfb59625302",
 	"SupportURL": "https://discord.gg/WRmb74fArq",
-	"EngineVersion": "5.3",
+	"EngineVersion": "5.4",
 	"CanContainContent": true,
 	"IsBetaVersion": true,
 	"IsExperimentalVersion": false,
