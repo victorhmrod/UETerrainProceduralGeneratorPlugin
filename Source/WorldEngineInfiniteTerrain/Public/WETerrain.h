@@ -6,7 +6,7 @@
 #include "GameFramework/Actor.h"
 #include "ProceduralMeshComponent.h"
 #include "FoliageType_InstancedStaticMesh.h"
-#include "WorldEngine.generated.h"
+#include "WETerrain.generated.h"
 
 USTRUCT(BlueprintType)
 struct FFoliageInstanceData
@@ -18,12 +18,12 @@ struct FFoliageInstanceData
 };
 
 UCLASS()
-class WORLDENGINEINFINITETERRAIN_API AWorldEngine : public AActor
+class WORLDENGINEINFINITETERRAIN_API AWETerrain : public AActor
 {
 	GENERATED_BODY()
 	
 public:	
-	AWorldEngine();
+	AWETerrain();
 	
 	// Create variables for procedural terrain generation! 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Terrain")
@@ -202,7 +202,7 @@ class FAsyncWorldGeneration : public FNonAbandonableTask
 
 {
 public:
-	FAsyncWorldGeneration(AWorldEngine* InwWorldGeneration): WorldGeneration(InwWorldGeneration) {}
+	FAsyncWorldGeneration(AWETerrain* InwWorldGeneration): WorldGeneration(InwWorldGeneration) {}
 	FORCEINLINE static TStatId GetStatId()
 	{
 		RETURN_QUICK_DECLARE_CYCLE_STAT(FAsyncWorldGeneration, STATGROUP_ThreadPoolAsyncTasks);
@@ -211,5 +211,5 @@ public:
 	void DoWork();
 	
 private:
-	AWorldEngine* WorldGeneration;
+	AWETerrain* WorldGeneration;
 };

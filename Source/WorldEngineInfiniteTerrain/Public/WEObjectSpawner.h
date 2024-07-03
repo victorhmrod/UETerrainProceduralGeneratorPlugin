@@ -4,16 +4,16 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
-#include "ObjectSpawner.generated.h"
+#include "WEObjectSpawner.generated.h"
 
 UCLASS()
-class WORLDENGINEINFINITETERRAIN_API AObjectSpawner : public AActor
+class WORLDENGINEINFINITETERRAIN_API AWEObjectSpawner : public AActor
 {
 	GENERATED_BODY()
 	
 public:	
 	// Sets default values for this actor's properties
-	AObjectSpawner();
+	AWEObjectSpawner();
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="SpawnGrid")
 	int CellSize = 5000;

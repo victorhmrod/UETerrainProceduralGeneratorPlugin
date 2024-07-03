@@ -3,10 +3,10 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "ObjectSpawner.h"
+#include "WEObjectSpawner.h"
 #include "Engine/HitResult.h"
 #include "GameFramework/Actor.h"
-#include "TiledAnimalSpawner.generated.h"
+#include "WEAnimalSpawner.generated.h"
 
 /**
  * 
@@ -34,7 +34,7 @@ struct FTileAnimalData
 };
 
 UCLASS()
-class WORLDENGINEINFINITETERRAIN_API ATiledAnimalSpawner : public AObjectSpawner
+class WORLDENGINEINFINITETERRAIN_API AWEAnimalSpawner : public AWEObjectSpawner
 {
 	GENERATED_BODY()
 
@@ -51,5 +51,5 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Animals")
 	TMap<TSubclassOf<AActor>, FTileAnimalData> PooledAnimals;
 
-	AActor* GetAnimalFromPool(const TSubclassOf<class AActor> AnimalClass);
+	AActor* GetAnimalFromPool(const TSubclassOf<class AActor>& AnimalClass);
 };

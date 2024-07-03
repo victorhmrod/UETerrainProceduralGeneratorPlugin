@@ -1,13 +1,13 @@
 // Procedural Infinite Terrain - Unreal Engine Plugin - (c) Wise Labs 2020-2023
 
 
-#include "ObjectSpawner.h"
+#include "WEObjectSpawner.h"
 #include "GameFramework/Pawn.h"
 #include "GameFramework/PlayerController.h"
 #include "Engine/World.h"
 
 // Sets default values
-AObjectSpawner::AObjectSpawner()
+AWEObjectSpawner::AWEObjectSpawner()
 {
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
@@ -16,21 +16,21 @@ AObjectSpawner::AObjectSpawner()
 }
 
 // Called when the game starts or when spawned
-void AObjectSpawner::BeginPlay()
+void AWEObjectSpawner::BeginPlay()
 {
 	Super::BeginPlay();
 	
 }
 
 // Called every frame
-void AObjectSpawner::Tick(float DeltaTime)
+void AWEObjectSpawner::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
 	UpdateTiles();
 }
 
-FVector AObjectSpawner::GetPlayerCell()
+FVector AWEObjectSpawner::GetPlayerCell()
 {
 	FVector Location = FVector::Zero();
 	const APlayerController* PlayerController = GetWorld()->GetFirstPlayerController();
@@ -46,7 +46,7 @@ FVector AObjectSpawner::GetPlayerCell()
 	return Location;
 }
 
-void AObjectSpawner::UpdateTiles()
+void AWEObjectSpawner::UpdateTiles()
 {
 	RemoveFarTiles();
 	
@@ -80,7 +80,7 @@ void AObjectSpawner::UpdateTiles()
 }
 
 
-void AObjectSpawner::UpdateTile(const FVector TileCenter)
+void AWEObjectSpawner::UpdateTile(const FVector TileCenter)
 {
 	FHitResult Hit;
 	FCollisionQueryParams CollisionParams;
@@ -110,12 +110,12 @@ void AObjectSpawner::UpdateTile(const FVector TileCenter)
 	}
 }
 
-void AObjectSpawner::SpawnObject(const FHitResult Hit, const FVector ParentTileCenter)
+void AWEObjectSpawner::SpawnObject(const FHitResult Hit, const FVector ParentTileCenter)
 {
 }
 
 
-void AObjectSpawner::RemoveFarTiles()
+void AWEObjectSpawner::RemoveFarTiles()
 {
 	FVector PlayerCell = GetPlayerCell();
 	TArray<FVector2d> SpawnedTilesCopy;
@@ -148,7 +148,7 @@ void AObjectSpawner::RemoveFarTiles()
 	}
 }
 
-void AObjectSpawner::RemoveTile(const FVector TileCenter)
+void AWEObjectSpawner::RemoveTile(const FVector TileCenter)
 {
 	
 }

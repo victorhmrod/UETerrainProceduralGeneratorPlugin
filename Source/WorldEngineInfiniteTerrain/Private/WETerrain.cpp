@@ -1,15 +1,15 @@
 // Procedural Infinite Terrain - Unreal Engine Plugin - (c) Wise Labs 2020-2023
 
-#include "WorldEngine.h"
+#include "WETerrain.h"
 #include "KismetProceduralMeshLibrary.h"
-#include "UTestBlueprintFunctionLibrary.h"
+#include "WEUtilities.h"
 #include "Async/Async.h"
 #include "Kismet/GameplayStatics.h"
 #include "GameFramework/Pawn.h"
 #include "Engine/World.h"
 #include "Net/UnrealNetwork.h"
 
-AWorldEngine::AWorldEngine()
+AWETerrain::AWETerrain()
 {
 	PrimaryActorTick.bCanEverTick = true;
 	
@@ -21,7 +21,7 @@ AWorldEngine::AWorldEngine()
 }
 
 // Called when the game starts or when spawned
-void AWorldEngine::BeginPlay()
+void AWETerrain::BeginPlay()
 {
 	Super::BeginPlay();
 	
@@ -29,12 +29,12 @@ void AWorldEngine::BeginPlay()
 }
 
 // Called every frame
-void AWorldEngine::Tick(float DeltaTime)
+void AWETerrain::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 }
 
-void AWorldEngine::GenerateTerrain(const int InSectionIndexX, const int InSectionIndexY, const int LODFactor)
+void AWETerrain::GenerateTerrain(const int InSectionIndexX, const int InSectionIndexY, const int LODFactor)
 {
 	int LODXVertexCount = XVertexCount / LODFactor;
 	int LODYVertexCount = YVertexCount / LODFactor;
@@ -129,13 +129,13 @@ void AWorldEngine::GenerateTerrain(const int InSectionIndexX, const int InSectio
 		}
 	}
 
-	UUTestBlueprintFunctionLibrary::TestNavUpdate(PROC_Terrain);
+	UWEUtilities::NavUpdate(PROC_Terrain);
 	
 	TileDataReady = true;
 }
 
 // Transforms infinite generation to the Async format, to make the system more optimized
-void AWorldEngine::GenerateTerrainAsync(const int InSectionIndexX, const int InSectionIndexY, const int LODLevel)
+void AWETerrain::GenerateTerrainAsync(const int InSectionIndexX, const int InSectionIndexY, const int LODLevel)
 {
 	GeneratorBusy = true;
 	SectionIndexX = InSectionIndexX;
@@ -155,7 +155,7 @@ void AWorldEngine::GenerateTerrainAsync(const int InSectionIndexX, const int InS
 }
 
 // Draw a simples section tile
-int AWorldEngine::DrawTile()
+int AWETerrain::DrawTile()
 {
 	int DrawnMeshSection;
 	TileDataReady = false;
@@ -177,10 +177,10 @@ int AWorldEngine::DrawTile()
 		}
 
 		PROC_Terrain->ClearMeshSection(ReplaceableMeshSection);
-		UUTestBlueprintFunctionLibrary::TestNavUpdate(PROC_Terrain);
+		UWEUtilities::NavUpdate(PROC_Terrain);
 		PROC_Terrain->CreateMeshSection(ReplaceableMeshSection, SubVertices, SubTriangles, SubNormals, SubUVs,
 		                                TArray<FColor>(), SubTangents, true);
-		UUTestBlueprintFunctionLibrary::TestNavUpdate(PROC_Terrain);
+		UWEUtilities::NavUpdate(PROC_Terrain);
 		
 		QueuedTiles.Add(FIntPoint(SectionIndexX, SectionIndexY), FIntPoint(ReplaceableMeshSection, CellLODLevel));
 		QueuedTiles.Remove(ReplaceableTile);
@@ -190,7 +190,7 @@ int AWorldEngine::DrawTile()
 		// Create mesh section
 		PROC_Terrain->CreateMeshSection(MeshSectionIndex, SubVertices, SubTriangles, SubNormals, SubUVs,
 		                                TArray<FColor>(), SubTangents, true);
-		UUTestBlueprintFunctionLibrary::TestNavUpdate(PROC_Terrain);
+		UWEUtilities::NavUpdate(PROC_Terrain);
 		if (TerrainMaterial)
 		{
 			PROC_Terrain->SetMaterial(MeshSectionIndex, TerrainMaterial);
@@ -216,7 +216,7 @@ int AWorldEngine::DrawTile()
 		FIntPoint* Val = RemoveLODQueue.Find(FIntPoint(SectionIndexX, SectionIndexY));
 		RemoveFoliageTile(Val->X);
 		PROC_Terrain->ClearMeshSection(Val->X);
-		UUTestBlueprintFunctionLibrary::TestNavUpdate(PROC_Terrain);
+		UWEUtilities::NavUpdate(PROC_Terrain);
 		RemoveLODQueue.Remove(FIntPoint(SectionIndexX, SectionIndexY));
 	}
 		
@@ -224,7 +224,7 @@ int AWorldEngine::DrawTile()
 }
 
 // Get exactly player location, if player is not spawned returns 0,0,0 to vector
-FVector AWorldEngine::GetPlayerLocation()
+FVector AWETerrain::GetPlayerLocation()
 {
 	// ReSharper disable once CppTooWideScope
 	TObjectPtr<APawn> PlayerPawn = UGameplayStatics::GetPlayerPawn(GetWorld(), 0);
@@ -236,13 +236,13 @@ FVector AWorldEngine::GetPlayerLocation()
 }
 
 // Get the location of the simple tile
-FVector2D AWorldEngine::GetTileLocation(FIntPoint TileCoordinate)
+FVector2D AWETerrain::GetTileLocation(FIntPoint TileCoordinate)
 {
 	return FVector2D(TileCoordinate * FIntPoint(XVertexCount - 1, YVertexCount - 1) * CellSize) + FVector2D(XVertexCount - 1, YVertexCount - 1) * CellSize / 2;
 }
 
 // Get the closest tile generated
-FIntPoint AWorldEngine::GetClosestQueuedTile()
+FIntPoint AWETerrain::GetClosestQueuedTile()
 {
 	float ClosestDistance = TNumericLimits<float>::Max();
 	FIntPoint ClosestTile;
@@ -266,7 +266,7 @@ FIntPoint AWorldEngine::GetClosestQueuedTile()
 }
 
 // Get the furthest tile updatable simple tile
-int AWorldEngine::GetFurthestUpdatableTile()
+int AWETerrain::GetFurthestUpdatableTile()
 {
 	float FurthestDistance = -1;
 	int FurthestTileIndex = -1;
@@ -291,7 +291,7 @@ int AWorldEngine::GetFurthestUpdatableTile()
 	return FurthestTileIndex;
 }
 
-void AWorldEngine::RemoveFoliageTile(const int TileIndex)
+void AWETerrain::RemoveFoliageTile(const int TileIndex)
 {
 	if (TileIndex > 0) return;
 	TArray<FProcMeshVertex> Vertices = PROC_Terrain->GetProcMeshSection(TileIndex)->ProcVertexBuffer;
@@ -316,7 +316,7 @@ void AWorldEngine::RemoveFoliageTile(const int TileIndex)
 }
 
 // Spawn foliage instances based on foliage clustered function
-void AWorldEngine::AddFoliageInstances(FVector InLocation)
+void AWETerrain::AddFoliageInstances(FVector InLocation)
 {
 	for (int FoliageTypeIndex = 0; FoliageTypeIndex < FoliageTypes.Num(); FoliageTypeIndex++)
 	{
@@ -341,7 +341,7 @@ void AWorldEngine::AddFoliageInstances(FVector InLocation)
 }
 
 // Spawn foliage in clustering
-void AWorldEngine::SpawnFoliageCluster(UFoliageType_InstancedStaticMesh* FoliageType,
+void AWETerrain::SpawnFoliageCluster(UFoliageType_InstancedStaticMesh* FoliageType,
                                            UInstancedStaticMeshComponent* FoliageIsmComponent,
                                            const FVector ClusterLocation)
 {
@@ -420,7 +420,7 @@ void AWorldEngine::SpawnFoliageCluster(UFoliageType_InstancedStaticMesh* Foliage
 	}
 }
 
-void AWorldEngine::RandomizeTerrain_Implementation()
+void AWETerrain::RandomizeTerrain_Implementation()
 {
 	if (RandomizeTerrainLayout)
 	{
@@ -433,7 +433,7 @@ void AWorldEngine::RandomizeTerrain_Implementation()
 }
 
 // Get height to deform procedural mesh terrain
-float AWorldEngine::GetHeight(FVector2D Location) const
+float AWETerrain::GetHeight(FVector2D Location) const
 {
 	return
 	{
@@ -445,13 +445,13 @@ float AWorldEngine::GetHeight(FVector2D Location) const
 }
 
 // Set perlin noise
-float AWorldEngine::PerlinNoiseExtended(const FVector2D Location, const float Scale, const float Amplitude,
+float AWETerrain::PerlinNoiseExtended(const FVector2D Location, const float Scale, const float Amplitude,
 	const FVector2D Offset) const
 {
 	return FMath::PerlinNoise2D(Location * Scale + FVector2D(.1f, .1f) + Offset + PerlinOffset) * Amplitude;
 }
 
-void AWorldEngine::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
+void AWETerrain::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
 {
 	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
 	DOREPLIFETIME(ThisClass, RandomizeTerrainLayout);

@@ -4,18 +4,16 @@
 
 #include "CoreMinimal.h"
 #include "Kismet/BlueprintFunctionLibrary.h"
-#include "UTestBlueprintFunctionLibrary.generated.h"
+#include "WEUtilities.generated.h"
 
 class USceneComponent;
 
 UCLASS()
-class WORLDENGINEINFINITETERRAIN_API UUTestBlueprintFunctionLibrary : public UBlueprintFunctionLibrary
+class WORLDENGINEINFINITETERRAIN_API UWEUtilities : public UBlueprintFunctionLibrary
 {
 	GENERATED_BODY()
 
 public:
 	UFUNCTION(BlueprintCallable, Category="WorldEngine")
-	static void TestNavUpdate(USceneComponent* SceneComponent);
-	
-	
+	static void NavUpdate(USceneComponent* SceneComponent);
 };

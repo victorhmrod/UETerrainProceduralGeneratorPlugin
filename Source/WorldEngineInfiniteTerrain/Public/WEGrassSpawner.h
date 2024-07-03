@@ -3,16 +3,16 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "ObjectSpawner.h"
+#include "WEObjectSpawner.h"
 #include "FoliageType_InstancedStaticMesh.h"
 #include "Chaos/ChaosEngineInterface.h"
-#include "GrassSpawner.generated.h"
+#include "WEGrassSpawner.generated.h"
 
 /**
  * 
  */
 UCLASS()
-class WORLDENGINEINFINITETERRAIN_API AGrassSpawner : public AObjectSpawner
+class WORLDENGINEINFINITETERRAIN_API AWEGrassSpawner : public AWEObjectSpawner
 {
 	GENERATED_BODY()
 

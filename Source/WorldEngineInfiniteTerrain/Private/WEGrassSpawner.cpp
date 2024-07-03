@@ -1,9 +1,9 @@
 // Procedural Infinite Terrain - Unreal Engine Plugin - (c) Wise Labs 2020-2023
 
-#include "GrassSpawner.h"
+#include "WEGrassSpawner.h"
 #include "PhysicalMaterials/PhysicalMaterial.h"
 
-void AGrassSpawner::SpawnObject(const FHitResult Hit, const FVector ParentTileCenter)
+void AWEGrassSpawner::SpawnObject(const FHitResult Hit, const FVector ParentTileCenter)
 {
 	if (Hit.Location.Z<250)
 	{
@@ -53,7 +53,7 @@ void AGrassSpawner::SpawnObject(const FHitResult Hit, const FVector ParentTileCe
 	}
 }
 
-void AGrassSpawner::RemoveTile(const FVector TileCenter)
+void AWEGrassSpawner::RemoveTile(const FVector TileCenter)
 {
 	Super::RemoveTile(TileCenter);
 	FVector Min = FVector(TileCenter + FVector::One() * CellSize * (-0.5f));

@@ -1,12 +1,11 @@
 // Procedural Infinite Terrain - Unreal Engine Plugin - (c) Wise Labs 2020-2023
 
-#include "TiledAnimalSpawner.h"
+#include "WEAnimalSpawner.h"
 #include "Engine/World.h"
-#include "Chaos/ChaosEngineInterface.h"
 
-void ATiledAnimalSpawner::SpawnObject(const FHitResult Hit, const FVector ParenTileCenter)
+void AWEAnimalSpawner::SpawnObject(const FHitResult Hit, const FVector ParentTileCenter)
 {
-	Super::SpawnObject(Hit, ParenTileCenter);
+	Super::SpawnObject(Hit, ParentTileCenter);
 
 	if (Hit.Location.Z < 250)
 	{
@@ -20,9 +19,9 @@ void ATiledAnimalSpawner::SpawnObject(const FHitResult Hit, const FVector ParenT
 			return;
 		}
 	}
-	
-	FVector SpawnLocation = Hit.Location + FVector::UpVector * 200;
-	FRotator SpawnRotation(0, FMath::RandRange(0.f, 360.f), 0.f);
+
+	const FVector SpawnLocation = Hit.Location + FVector::UpVector * 200;
+	const FRotator SpawnRotation(0, FMath::RandRange(0.f, 360.f), 0.f);
 
 	for (int i = 0; i < AnimalTypes.Num(); ++i)
 	{
@@ -49,7 +48,7 @@ void ATiledAnimalSpawner::SpawnObject(const FHitResult Hit, const FVector ParenT
 			continue;
 		}
 		
-		FTileAnimalData* AnimalData = AnimalsOfTile.Find(ParenTileCenter);
+		FTileAnimalData* AnimalData = AnimalsOfTile.Find(ParentTileCenter);
 
 		if (AnimalData)
 		{
@@ -57,12 +56,12 @@ void ATiledAnimalSpawner::SpawnObject(const FHitResult Hit, const FVector ParenT
 		}
 		else
 		{
-			AnimalsOfTile.Add(ParenTileCenter, FTileAnimalData({Animal}));
+			AnimalsOfTile.Add(ParentTileCenter, FTileAnimalData({Animal}));
 		}
 	}
 }
 
-void ATiledAnimalSpawner::RemoveTile(const FVector TileCenter)
+void AWEAnimalSpawner::RemoveTile(const FVector TileCenter)
 {
 	Super::RemoveTile(TileCenter);
 	
@@ -87,7 +86,7 @@ void ATiledAnimalSpawner::RemoveTile(const FVector TileCenter)
 	AnimalData->SpawnedAnimals.Empty();
 }
 
-AActor* ATiledAnimalSpawner::GetAnimalFromPool(const TSubclassOf<AActor> AnimalClass)
+AActor* AWEAnimalSpawner::GetAnimalFromPool(const TSubclassOf<AActor>& AnimalClass)
 {
 	AActor* Animal = nullptr;
 
