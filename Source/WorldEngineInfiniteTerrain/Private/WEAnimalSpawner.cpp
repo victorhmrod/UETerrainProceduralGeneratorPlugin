@@ -1,6 +1,7 @@
 // Procedural Infinite Terrain - Unreal Engine Plugin - (c) Wise Labs 2020-2023
 
 #include "WEAnimalSpawner.h"
+#include "PhysicalMaterials/PhysicalMaterial.h"
 #include "Engine/World.h"
 
 void AWEAnimalSpawner::SpawnObject(const FHitResult Hit, const FVector ParentTileCenter)

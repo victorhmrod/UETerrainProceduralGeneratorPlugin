@@ -3,6 +3,7 @@
 
 #include "WEObjectSpawner.h"
 #include "GameFramework/Pawn.h"
+#include "PhysicalMaterials/PhysicalMaterial.h"
 #include "GameFramework/PlayerController.h"
 #include "Engine/World.h"
 

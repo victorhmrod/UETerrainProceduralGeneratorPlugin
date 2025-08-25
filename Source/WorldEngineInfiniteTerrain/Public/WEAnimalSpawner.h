@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "WEObjectSpawner.h"
+#include "Chaos/ChaosEngineInterface.h"
 #include "Engine/HitResult.h"
 #include "GameFramework/Actor.h"
 #include "WEAnimalSpawner.generated.h"

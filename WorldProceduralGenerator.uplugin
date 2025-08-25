@@ -12,7 +12,7 @@
 	"SupportURL": "https://discord.gg/WRmb74fArq",
 	"EngineVersion": "5.4",
 	"CanContainContent": true,
-	"IsBetaVersion": true,
+	"IsBetaVersion": false,
 	"IsExperimentalVersion": false,
 	"Installed": false,
 	"Modules": [
@@ -20,7 +20,10 @@
 			"Name": "WorldEngineInfiniteTerrain",
 			"Type": "Runtime",
 			"LoadingPhase": "Default",
-			"PlatformAllowList": ["Win64", "Mac"]
+			"PlatformAllowList": [
+				"Win64",
+				"Mac"
+			]
 		}
 	],
 	"Plugins": [
